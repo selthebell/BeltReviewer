@@ -1,0 +1,65 @@
+<html>
+<head>
+  <meta char='utf-8'>
+  <title>Books Review</title>
+  {% load staticfiles %}
+  <link rel="stylesheet" type="text/css" href="{% static 'books_app/css/style.css' %}" media="screen" title="no title"  charset="utf-8">
+</head>
+<body>
+  <h1>Books</h1>
+  {%if messages%}
+  {% for message in messages%}
+  <h4>{{ message }}</h4>
+  {%endfor%}
+  {%endif%}
+  <section>
+  <div id="first">
+    <div id="left"><h4>Welcome, {{request.session.user.first_name}}, {{request.session.user.first_name}} </h4></div>
+    <div id="middle"><a href={%url 'books:showAdd'%}>Add Book Review</a></div>
+    <div id="right">logout</div>
+  </div>
+</section>
+<section>
+    <div id="leftreview">
+      <h5>Recent Book reviews:</h5>
+      {% for book in books %}
+        <div>
+        <a href={% url 'books:review' book.id %}>Title:{{book.title}}</a>
+        </div>
+        {% if book.get_book_rating %}
+          {% for r in book.get_book_rating %}
+          <div>
+            Rating :
+            {% for i in r.get_rating_list %}
+              <img src="{% static 'books_app/img/yellowstar.png' %}" alt="">
+            {% endfor %}
+            {% for i in r.get_rating_list_white %}
+              <img src="{% static 'books_app/img/whitestar.png' %}" alt="">
+            {% endfor %}
+            {{r.user_rating.first_name}} Says
+            Review :{{r.review}}
+            Posted on :{{r.created_at}}
+          </div>
+          {%endfor%}
+        {%endif%}
+        {%endfor%}
+    </div>
+    <div id="rightreview">
+      Other Book with Reviews:
+      <div id="table-wrapper">
+        <div id="table-scroll">
+          <table>
+            {% for book in books %}
+            <tr>
+              <td>Title:{{book.title}}
+              <a href={% url 'books:review' book.id %}>{{book.title}}</a>
+              </td>
+            </tr>
+            {%endfor%}
+          </table>
+        </div>
+      </div>
+    </div>
+</section>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<html>
+<head>
+  <meta char='utf-8'>
+  <title>Add a Book Review</title>
+  {% load staticfiles %}
+  <link rel="stylesheet" type="text/css" href="{% static 'books_app/css/style.css' %}" media="screen" title="no title"  charset="utf-8">
+</head>
+<body>
+  {%if messages%}
+  {% for message in messages%}
+  <h4>{{ message }}</h4>
+  {%endfor%}
+  {%endif%}
+  {% for book in books %}
+    <form action={% url 'books:update' book.id %} method="post">
+      {% csrf_token %}
+    <p>
+    Book Title:{{book.title}}
+    Author:{{book.author.name}}
+  </p>
+  <div>
+    <h4>Reviews:</h4>
+  </div>
+    {% if book.get_book_rating %}
+      {% for r in book.get_book_rating %}
+        <div>
+          <hr>
+        Rating :
+        {% for i in r.get_rating_list %}
+          <img src="{% static 'books_app/img/yellowstar.png' %}" alt="">
+        {% endfor %}
+        {% for i in r.get_rating_list_white %}
+          <img src="{% static 'books_app/img/whitestar.png' %}" alt="">
+        {% endfor %}
+        {{r.user_rating.first_name}} Says
+        Review :{{r.review}}
+        Posted on :{{r.created_at}}
+      </div>
+      {%endfor%}
+    {%endif%}
+    {%endfor%}
+    <input type='hidden' name="id" value="{{request.session.user.id}}">
+    <table>
+    <tr>
+    <td>Review</td>
+      <td><textarea rows=5 cols=50 name="review"></textarea></td>
+    </tr>
+    <tr>
+    <td>Rating</td>
+    <td>
+      <select name="rating">
+        <option value=1>1</option>
+        <option value=2>2</option>
+        <option value=3>3</option>
+        <option value=4>4</option>
+        <option value=5>5</option>
+      </select>
+      stars
+    </td>
+    </tr>
+    <tr>
+      <td>
+        <td><button type="submit" value="Add">Add Book and Review</button></td>
+      </td>
+    </tr>
+    </table>
+  </form>
+</body>
+</html>

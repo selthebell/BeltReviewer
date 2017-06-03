@@ -1,0 +1,25 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta char='utf-8'>
+  <title>Users</title>
+  {% load staticfiles %}
+  <link rel="stylesheet" type="text/css" href="{% static 'log-reg/css/style.css'%}" media="screen" title="no title"  charset="utf-8">
+
+</head></head>
+<body>
+
+  {%if messages%}
+  {% for message in messages%}
+  <h1>{{ message }}</h1>
+  {%endfor%}
+  {%endif%}
+
+    <div>
+      {{users.first_name}}
+      {{users.last_name}}
+      {{users.email}}
+    </div>
+  <h3><a href="/">back</a></h3>
+</body>
+</html>
